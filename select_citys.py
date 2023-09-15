@@ -4,7 +4,7 @@ def province(provinces:list,fp:str=None) -> list:
     # 几年来行政区划分在村镇县层级有所变化
     # 但百度api仅支持市级检索
     # 所以暂时没有影响
-    with open('./data/city_object.json','r',encoding='utf-8') as f:
+    with open('./resource/city_object.json','r',encoding='utf-8') as f:
         all_cities =json.loads(f.read())
 
     city_list = []
