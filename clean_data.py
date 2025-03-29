@@ -1,6 +1,7 @@
 import json
 import os
 import csv
+from typing import Tuple
 
 rule = {}
 # 优先级从上到下
@@ -56,9 +57,9 @@ def check_data(dir_name:str,prefix:str= '') -> str:
         # 只查找特定数据文件
         if prefix in file:
             datalist = _clean(os.path.join(dir_name,file))
-            all_poi = all_poi.extend(datalist[0])
-            all_del = all_del.extend(datalist[1])
-            all_unknow = all_unknow.extend(datalist[2])
+            all_poi.extend(datalist[0])
+            all_del.extend(datalist[1])
+            all_unknow.extend(datalist[2])
 
     with open(os.path.join(dir_name,'data' + '_check' + '.json'),'w',encoding='utf-8') as f:
         json.dump(all_poi,f,ensure_ascii=False,indent=4)
@@ -81,7 +82,7 @@ def _clean(fp:str,
            exclude_labels:str = rule['default_exclude_labels'],         
            supplemental_label:str = default_supplemental_label,
            supplemental_tag:str = default_supplemental_tag
-           ) -> tuple[list,list,list]:
+           ) -> Tuple[list, list, list]:
     
     poi_list = []
     unknow_list = []
@@ -219,23 +220,25 @@ def deduplcation(fp:str,encode:str='utf-8',distance:int=100,putout_name='') -> s
         raise FileExistsError
     
     data_ded = []
-    p_set = {}
+    p_set = []
 
     with open(fp,'r',encoding=encode) as f:
-        data_all = json.load(f.read())
+        data_all = json.load(f)
         for poi in data_all:
             # 距离小于0.001的将被视为同一地物
             coordinate = [int(poi['detail_info']['navi_location']['lng']*100000 / distance),
                           int(poi['detail_info']['navi_location']['lat']*100000 / distance)]
             if not coordinate in p_set:
-                p_set.add(coordinate)
+                p_set.append(coordinate)
                 data_ded.append(poi)
 
         if putout_name == '':
             fp = os.path.join(os.path.dirname(fp),putout_name)
         else:
-            fp = os.path.splitext(fp)(0) + '_ded' + os.path.splitext(fp)(1)
-            
+            base_name = os.path.basename(fp)
+            name, ext = os.path.splitext(fp)
+            file_name = f"{name}_ded{ext}"
+            fp = os.path.join(base_name, file_name)
         with open(fp,'w',encoding='utf-8') as f:
             json.dump(data_ded,f,ensure_ascii=False,indent=4)
 

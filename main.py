@@ -75,7 +75,7 @@ if __name__ == '__main__':
     # checked_data = clean_data.check_data(f'{os.path.dirname(poi_data)}','all')
     # clean_data.repack(checked_data)
 
-    file_data = clean_data.pack_up_data('医院_data')
-    checked_data = clean_data.check_data('医院_data','all')
+    file_data = clean_data.pack_up_data('/path/to/your/data','all')
+    checked_data = clean_data.check_data('/path/to/your/data','all')
     clean_data.repack(checked_data)
     

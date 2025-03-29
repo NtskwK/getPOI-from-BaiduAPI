@@ -1,6 +1,6 @@
 import json
 
-def province(provinces:list,fp:str=None) -> list:
+def province(provinces:list,fp:str="") -> list:
     # 几年来行政区划分在村镇县层级有所变化
     # 但百度api仅支持市级检索
     # 所以暂时没有影响
