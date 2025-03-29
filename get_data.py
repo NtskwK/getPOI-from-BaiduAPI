@@ -143,7 +143,7 @@ def _computer_sn(url:str, sk:str, params:dict) -> str:
     # 对queryStr进行转码，safe内的保留字符不转换
     encodedStr = urllib.parse.quote(queryStr, safe='/:=&?#+!$,;"@()*[]')
 
-    # 在最后直接追加上yoursk
+    # 在最后直接追加上你的sk
     rawStr = encodedStr + sk
     
     return hashlib.md5(urllib.parse.quote_plus(rawStr).encode('utf-8')).hexdigest()
